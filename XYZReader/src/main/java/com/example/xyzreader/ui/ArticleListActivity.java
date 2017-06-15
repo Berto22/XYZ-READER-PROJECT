@@ -165,12 +165,9 @@ public class ArticleListActivity extends ActionBarActivity implements
                         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(activity, vh.thumbnailView,
                                 getString(R.string.transition_image));
                         startActivity(intent, options.toBundle());
-                        //postponeEnterTransition();
-                        ActivityCompat.startPostponedEnterTransition(activity);
-                    }
-                    //Bundle bundle = ActivityOptions.makeSceneTransitionAnimation((Activity)getApplicationContext()).toBundle();
 
-                    //startActivity(intent,);
+                    }
+
                 }
             });
             return vh;

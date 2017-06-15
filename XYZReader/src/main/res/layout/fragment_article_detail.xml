@@ -87,7 +87,9 @@
                     android:textColorLink="@color/theme_accent"
                     android:textSize="@dimen/detail_body_text_size"
                     android:fontFamily="sans-serif-condensed"
-                    android:lineSpacingMultiplier="@fraction/detail_body_line_spacing_multiplier" />
+                    android:lineSpacingMultiplier="@fraction/detail_body_line_spacing_multiplier"
+                    android:ellipsize="end"
+                    android:maxLines="1" />
 
             </com.example.xyzreader.ui.MaxWidthLinearLayout>
         </FrameLayout>

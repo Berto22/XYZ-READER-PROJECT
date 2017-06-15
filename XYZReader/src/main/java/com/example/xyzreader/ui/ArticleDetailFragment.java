@@ -97,6 +97,7 @@ public class ArticleDetailFragment extends Fragment implements
         mStatusBarFullOpacityBottom = getResources().getDimensionPixelSize(
                 R.dimen.detail_card_top_margin);
         setHasOptionsMenu(true);
+        ActivityCompat.postponeEnterTransition(getActivity());
     }
 
     public ArticleDetailActivity getActivityCast() {
@@ -257,7 +258,7 @@ public class ArticleDetailFragment extends Fragment implements
 
                         }
                     });
-            scheduleStartPostponedTransition(mPhotoContainerView);
+            scheduleStartPostponedTransition(mPhotoView);
         } else {
             mRootView.setVisibility(View.GONE);
             titleView.setText("N/A");
@@ -313,7 +314,6 @@ public class ArticleDetailFragment extends Fragment implements
             @Override
             public boolean onPreDraw() {
                 sharedElement.getViewTreeObserver().removeOnPreDrawListener(this);
-                scheduleStartPostponedTransition(sharedElement);
                 ActivityCompat.startPostponedEnterTransition(getActivity());
                 return true;
             }
