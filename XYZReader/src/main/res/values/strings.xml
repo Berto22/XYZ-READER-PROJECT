@@ -10,5 +10,11 @@
     <string name="up">Up</string>
 
     <string name="transition_image">Thumbnail</string>
+    <string name="transition_1">Transition_1</string>
+    <string name="transition_2">Transition_2</string>
+    <string name="transition_3">Transition_3</string>
+    <string name="transition_4">Transition_4</string>
+    <string name="transition_5">Transition_5</string>
+    <string name="transition_6">Transition_6</string>
 
 </resources>

@@ -16,10 +16,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Map;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v7.graphics.Palette;
 import android.text.Html;
 import android.text.format.DateUtils;
@@ -70,6 +74,29 @@ public class ArticleDetailFragment extends Fragment implements
     // Most time functions can only handle 1902 - 2037
     private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
 
+    /*private SharedElementCallback mCallback = new SharedElementCallback() {
+        @Override
+        public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+            super.onMapSharedElements(names, sharedElements);
+            if (mIsReturning) {
+                ImageView sharedElement = mCurrentDetailFragment.mPhotoView;
+                if (sharedElement == null) {
+                    names.clear();
+                    sharedElements.clear();
+                } else if (mStartingPosition != mCurrentPosition) {
+                    names.clear();
+                    names.add(sharedElement.getTransitionName());
+                    sharedElements.clear();
+                    sharedElements.put(sharedElement.getTransitionName(), sharedElement);
+                }
+            }
+        }
+    }; */
+    private ArticleDetailFragment mCurrentDetailFragment;
+    private boolean mIsReturning;
+    private int mCurrentPosition;
+    private int mStartingPosition;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -98,6 +125,7 @@ public class ArticleDetailFragment extends Fragment implements
                 R.dimen.detail_card_top_margin);
         setHasOptionsMenu(true);
         ActivityCompat.postponeEnterTransition(getActivity());
+        //ActivityCompat.setEnterSharedElementCallback(mCallback);
     }
 
     public ArticleDetailActivity getActivityCast() {
@@ -318,5 +346,13 @@ public class ArticleDetailFragment extends Fragment implements
                 return true;
             }
         });
+    }
+
+    @Nullable
+    ImageView getArticleImage() {
+        if (isVisible()) {
+            return mPhotoView;
+        }
+        return null;
     }
 }

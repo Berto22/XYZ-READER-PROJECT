@@ -13,6 +13,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v13.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.RecyclerView;
@@ -162,9 +164,18 @@ public class ArticleListActivity extends ActionBarActivity implements
                     //startActivity(new Intent(Intent.ACTION_VIEW,
                             //ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition()))));
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-                        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(activity, vh.thumbnailView,
-                                getString(R.string.transition_image));
-                        startActivity(intent, options.toBundle());
+                        /*ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(activity, vh.thumbnailView,
+                                vh.thumbnailView.getTransitionName());
+                        startActivity(intent, options.toBundle()); */
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("position", viewType);
+                        intent.putExtras(bundle);
+
+                        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                activity, Pair.create((View)vh.thumbnailView, ViewCompat.getTransitionName(vh.thumbnailView))
+                        );
+
+                        startActivity(intent, optionsCompat.toBundle());
 
                     }
 
@@ -208,6 +219,13 @@ public class ArticleListActivity extends ActionBarActivity implements
                     mCursor.getString(ArticleLoader.Query.THUMB_URL),
                     ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
             holder.thumbnailView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
+
+            ViewCompat.setTransitionName(holder.thumbnailView, getString(R.string.transition_1) + position);
+            ViewCompat.setTransitionName(holder.thumbnailView, getString(R.string.transition_2) + position);
+            ViewCompat.setTransitionName(holder.thumbnailView, getString(R.string.transition_3) + position);
+            ViewCompat.setTransitionName(holder.thumbnailView, getString(R.string.transition_4) + position);
+            ViewCompat.setTransitionName(holder.thumbnailView, getString(R.string.transition_5) + position);
+            ViewCompat.setTransitionName(holder.thumbnailView, getString(R.string.transition_6) + position);
         }
 
         @Override

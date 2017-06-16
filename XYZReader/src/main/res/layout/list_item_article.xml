@@ -68,8 +68,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:scaleType="centerCrop"
-            android:background="@color/photo_placeholder"
-            android:transitionName="@string/transition_image"/>
+            android:background="@color/photo_placeholder" />
 
         <TextView
             android:id="@+id/article_title"
