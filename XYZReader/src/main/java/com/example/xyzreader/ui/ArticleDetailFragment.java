@@ -19,11 +19,13 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.app.SharedElementCallback;
+import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.graphics.Palette;
 import android.text.Html;
 import android.text.format.DateUtils;
@@ -33,6 +35,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -74,6 +77,11 @@ public class ArticleDetailFragment extends Fragment implements
     // Most time functions can only handle 1902 - 2037
     private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
 
+    private static final String IMAGE_POSITION = "image_position";
+    private static final String STARTING_IMAGE_POSITION = "starting_image_position";
+
+    //private final Window.Callback mImageCallback = new C
+
     /*private SharedElementCallback mCallback = new SharedElementCallback() {
         @Override
         public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
@@ -93,9 +101,10 @@ public class ArticleDetailFragment extends Fragment implements
         }
     }; */
     private ArticleDetailFragment mCurrentDetailFragment;
-    private boolean mIsReturning;
-    private int mCurrentPosition;
+    private boolean mIsTransitioning;
+    private int mImagePosition;
     private int mStartingPosition;
+    private long mBackgroundImageFadeMillis;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -104,9 +113,11 @@ public class ArticleDetailFragment extends Fragment implements
     public ArticleDetailFragment() {
     }
 
-    public static ArticleDetailFragment newInstance(long itemId) {
+    public static ArticleDetailFragment newInstance(int position, long itemId) {
         Bundle arguments = new Bundle();
         arguments.putLong(ARG_ITEM_ID, itemId);
+        arguments.putInt(IMAGE_POSITION, position);
+        arguments.putLong(STARTING_IMAGE_POSITION, itemId);
         ArticleDetailFragment fragment = new ArticleDetailFragment();
         fragment.setArguments(arguments);
         return fragment;
@@ -118,6 +129,11 @@ public class ArticleDetailFragment extends Fragment implements
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             mItemId = getArguments().getLong(ARG_ITEM_ID);
+            mStartingPosition = getArguments().getInt(STARTING_IMAGE_POSITION);
+            mImagePosition = getArguments().getInt(IMAGE_POSITION);
+            mIsTransitioning = savedInstanceState == null && mStartingPosition == mImagePosition;
+            mBackgroundImageFadeMillis = 1000;
+
         }
 
         mIsCard = getResources().getBoolean(R.bool.detail_is_card);
@@ -168,6 +184,7 @@ public class ArticleDetailFragment extends Fragment implements
         });
 
         mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
+        mPhotoView.setTransitionName(getString(R.string.transition_1 + mImagePosition));
         mPhotoContainerView = mRootView.findViewById(R.id.photo_container);
 
         mStatusBarColorDrawable = new ColorDrawable(0);
