@@ -221,7 +221,7 @@ public class ArticleListActivity extends ActionBarActivity implements
                         intent.putExtra(EXTRA_STARTING_IMAGE_POSITION, mImagePosition);
 
                         ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                                activity, vh.thumbnailView, ViewCompat.getTransitionName(vh.thumbnailView));
+                                activity, vh.thumbnailView, vh.thumbnailView.getTransitionName());
 
                         startActivity(intent, optionsCompat.toBundle());
 
@@ -246,6 +246,7 @@ public class ArticleListActivity extends ActionBarActivity implements
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             mCursor.moveToPosition(position);
+            mImagePosition = position;
             holder.titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
             Date publishedDate = parsePublishedDate();
             if (!publishedDate.before(START_OF_EPOCH.getTime())) {
@@ -268,9 +269,9 @@ public class ArticleListActivity extends ActionBarActivity implements
                     ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
             holder.thumbnailView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
 
-            ViewCompat.setTransitionName(holder.thumbnailView, getString(R.string.transition_1) + position);
-            holder.thumbnailView.setTag(getString(R.string.transition_1) + position);
-            mImagePosition = position;
+            ViewCompat.setTransitionName(holder.thumbnailView, getString(R.string.transition_1) + mImagePosition);
+            holder.thumbnailView.setTag(getString(R.string.transition_1) + mImagePosition);
+
             Log.d(TAG, "position in articlelistactivity " + position);
             //ViewCompat.setTransitionName(holder.thumbnailView, getString(R.string.transition_2) + position);
             //ViewCompat.setTransitionName(holder.thumbnailView, getString(R.string.transition_3) + position);

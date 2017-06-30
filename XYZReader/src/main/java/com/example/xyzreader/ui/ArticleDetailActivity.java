@@ -255,7 +255,8 @@ public class ArticleDetailActivity extends ActionBarActivity
         }
 
         @Override
-        public int getCount() {
+        public int getCount()
+        {
             return (mCursor != null) ? mCursor.getCount() : 0;
         }
     }

@@ -100,7 +100,6 @@ public class ArticleDetailFragment extends Fragment implements
             }
         }
     }; */
-    private ArticleDetailFragment mCurrentDetailFragment;
     private boolean mIsTransitioning;
     private int mImagePosition;
     private int mStartingPosition;
@@ -120,6 +119,7 @@ public class ArticleDetailFragment extends Fragment implements
         arguments.putLong(STARTING_IMAGE_POSITION, itemId);
         ArticleDetailFragment fragment = new ArticleDetailFragment();
         fragment.setArguments(arguments);
+        Log.d(TAG, "Position " + position);
         return fragment;
     }
 
@@ -131,6 +131,10 @@ public class ArticleDetailFragment extends Fragment implements
             mItemId = getArguments().getLong(ARG_ITEM_ID);
             mStartingPosition = getArguments().getInt(STARTING_IMAGE_POSITION);
             mImagePosition = getArguments().getInt(IMAGE_POSITION);
+            Log.d(TAG, "mImagePosition " + mImagePosition);
+            Log.d(TAG, "mItemId " + mItemId);
+            Log.d(TAG, "mStartingPosition " + mStartingPosition);
+
             mIsTransitioning = savedInstanceState == null && mStartingPosition == mImagePosition;
             mBackgroundImageFadeMillis = 1000;
 
